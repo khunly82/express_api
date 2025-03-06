@@ -49,13 +49,14 @@ var MessageController = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, mailer_1.mailer.sendMail({
-                                from: process.env.STMP_USER,
+                                from: process.env.SMTP_USER,
                                 to: 'khun.ly@bstorm.be',
                                 subject: 'test email',
                                 text: 'test html'
                             })];
                     case 1:
                         _a.sent();
+                        console.log(42);
                         res.json({ status: 'OK' });
                         return [3 /*break*/, 3];
                     case 2:

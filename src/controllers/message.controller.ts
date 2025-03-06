@@ -1,25 +1,18 @@
 import { Request, Response, text } from 'express';
 import nodemailer from 'nodemailer';
+import { mailer } from '../infrastucture/mailer';
 
 export class MessageController {
     static async send(req: Request, res: Response) {
         try {
-            const transporter = nodemailer.createTransport({
-                host: 'ssl0.ovh.com',
-                port:  587,
-                secure: false,
-                auth: {
-                    user: 'ft@khunly.be',
-                    pass: 'test1234='
-                }
-            })
-
-            await transporter.sendMail({
-                from: 'ft@khunly.be',
+            await mailer.sendMail({
+                from: process.env.SMTP_USER,
                 to: 'khun.ly@bstorm.be',
                 subject: 'test email',
                 text: 'test html'
             });
+
+            console.log(42)
             res.json({ status: 'OK' });
         } catch(e) {
             console.log(e);
