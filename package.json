@@ -1,0 +1,22 @@
+{
+  "name": "express_api",
+  "version": "1.0.0",
+  "description": "Petite API pour les web dev de Technifutur",
+  "license": "ISC",
+  "author": "Khun",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "node --env-file=.env .",
+    "build": "tsc",
+    "dev": "nodemon --env-file=.env ."
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "typescript": "^5.8.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "nodemon": "^3.1.9",
+    "tsc-watch": "^6.2.1"
+  }
+}
