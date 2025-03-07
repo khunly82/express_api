@@ -43,27 +43,30 @@ var MessageController = /** @class */ (function () {
     }
     MessageController.send = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var e_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _a, to, subject, text, e_1;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
+                        _a = req.body, to = _a.to, subject = _a.subject, text = _a.text;
+                        _b.label = 1;
+                    case 1:
+                        _b.trys.push([1, 3, , 4]);
                         return [4 /*yield*/, mailer_1.mailer.sendMail({
                                 from: process.env.SMTP_USER,
-                                to: 'khun.ly@bstorm.be',
-                                subject: 'test email',
-                                text: 'test html'
+                                to: to,
+                                subject: subject,
+                                text: text,
                             })];
-                    case 1:
-                        _a.sent();
-                        console.log(42);
-                        res.json({ status: 'OK' });
-                        return [3 /*break*/, 3];
                     case 2:
-                        e_1 = _a.sent();
+                        _b.sent();
+                        console.log(42);
+                        res.json({ status: "OK" });
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_1 = _b.sent();
                         console.log(e_1);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
