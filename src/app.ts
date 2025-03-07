@@ -1,5 +1,8 @@
 import express from "express";
 import { routes } from "./routes";
+import db from "./models";
+
+db.sequelize.sync();
 
 const app = express();
 
