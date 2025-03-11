@@ -1,6 +1,5 @@
 import { Request, Response, text } from "express";
-import nodemailer from "nodemailer";
-import { mailer } from "../infrastucture/mailer";
+import { mailer } from "../infrastructure/mailer";
 
 export class MessageController {
   static async send(req: Request, res: Response) {
@@ -13,8 +12,6 @@ export class MessageController {
         subject: subject,
         text: text,
       });
-
-      console.log(42);
       res.json({ status: "OK" });
     } catch (e) {
       console.log(e);

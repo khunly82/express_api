@@ -3,17 +3,17 @@ import {
   InferAttributes,
   InferCreationAttributes,
   Model,
-  ModelCtor,
+  ModelStatic,
   Sequelize,
 } from "sequelize";
 
 /* DATABASE */
 export interface Db {
   sequelize: Sequelize;
-  movie: ModelCtor<Movie>;
+  movie: ModelStatic<Movie>;
 }
 
-export interface Movie
+export interface Movie 
   extends Model<InferAttributes<Movie>, InferCreationAttributes<Movie>> {
   id: CreationOptional<number>;
   title: string;

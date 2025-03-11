@@ -36,40 +36,35 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MessageController = void 0;
-var mailer_1 = require("../infrastructure/mailer");
-var MessageController = /** @class */ (function () {
-    function MessageController() {
-    }
-    MessageController.send = function (req, res) {
-        return __awaiter(this, void 0, void 0, function () {
-            var _a, to, subject, text, e_1;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _a = req.body, to = _a.to, subject = _a.subject, text = _a.text;
-                        _b.label = 1;
-                    case 1:
-                        _b.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, mailer_1.mailer.sendMail({
-                                from: process.env.SMTP_USER,
-                                to: to,
-                                subject: subject,
-                                text: text,
-                            })];
-                    case 2:
-                        _b.sent();
-                        res.json({ status: "OK" });
-                        return [3 /*break*/, 4];
-                    case 3:
-                        e_1 = _b.sent();
-                        console.log(e_1);
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
+exports.ValidationMiddleware = void 0;
+var yup_1 = require("yup");
+var ValidationMiddleware = function (schema) { return function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var data, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, schema.validate(req.body, { abortEarly: false })
+                    // passer au middleware suivant
+                ];
+            case 1:
+                data = _a.sent();
+                // passer au middleware suivant
+                req.body = data;
+                next();
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                // sinon on envoie un code d'erreur
+                if (error_1 instanceof yup_1.ValidationError) {
+                    res.status(400).json(error_1);
                 }
-            });
-        });
-    };
-    return MessageController;
-}());
-exports.MessageController = MessageController;
+                else {
+                    res.sendStatus(500);
+                }
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); }; };
+exports.ValidationMiddleware = ValidationMiddleware;

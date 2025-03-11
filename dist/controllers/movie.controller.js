@@ -44,7 +44,7 @@ var models_1 = __importDefault(require("../models"));
 var MovieController = /** @class */ (function () {
     function MovieController() {
     }
-    MovieController.getMovies = function (req, res) {
+    MovieController.getMovies = function (_, res) {
         return __awaiter(this, void 0, void 0, function () {
             var result;
             return __generator(this, function (_a) {
@@ -57,6 +57,114 @@ var MovieController = /** @class */ (function () {
                         result = _a.sent();
                         res.json(result);
                         return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MovieController.addMovie = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, title, duration, hasSubtitle, releaseYear, movie, data;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = req.body, title = _a.title, duration = _a.duration, hasSubtitle = _a.hasSubtitle, releaseYear = _a.releaseYear;
+                        return [4 /*yield*/, models_1.default.movie.findOne({ where: {
+                                    title: title,
+                                    releaseYear: releaseYear
+                                } })];
+                    case 1:
+                        movie = _b.sent();
+                        if (!!movie) return [3 /*break*/, 3];
+                        return [4 /*yield*/, models_1.default.movie.create({ title: title, duration: duration, hasSubtitle: hasSubtitle, releaseYear: releaseYear })];
+                    case 2:
+                        data = _b.sent();
+                        res.status(201).json(data.toJSON());
+                        return [3 /*break*/, 4];
+                    case 3:
+                        res.status(400).json({
+                            error: 'Ce film existe déjà'
+                        });
+                        _b.label = 4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MovieController.getMovieById = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var id, movie;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        id = req.params.id;
+                        return [4 /*yield*/, models_1.default.movie.findOne({
+                                where: { id: id }
+                            })];
+                    case 1:
+                        movie = _a.sent();
+                        if (!movie) {
+                            res.sendStatus(404);
+                        }
+                        else {
+                            res.json(movie.toJSON());
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MovieController.deleteMovie = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var id, movie;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        id = req.params.id;
+                        return [4 /*yield*/, models_1.default.movie.findOne({
+                                where: { id: id }
+                            })];
+                    case 1:
+                        movie = _a.sent();
+                        if (!!movie) return [3 /*break*/, 2];
+                        res.sendStatus(404);
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, movie.destroy()];
+                    case 3:
+                        _a.sent();
+                        res.json(movie.toJSON());
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MovieController.updateMovie = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var id, _a, title, releaseYear, hasSubtitle, duration, movie, data;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        id = req.params.id;
+                        _a = req.body, title = _a.title, releaseYear = _a.releaseYear, hasSubtitle = _a.hasSubtitle, duration = _a.duration;
+                        return [4 /*yield*/, models_1.default.movie.findOne({
+                                where: { id: id }
+                            })];
+                    case 1:
+                        movie = _b.sent();
+                        if (!!movie) return [3 /*break*/, 2];
+                        res.sendStatus(404);
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, movie.update({
+                            title: title,
+                            releaseYear: releaseYear,
+                            duration: duration,
+                            hasSubtitle: hasSubtitle
+                        })];
+                    case 3:
+                        data = _b.sent();
+                        res.json(data.toJSON());
+                        _b.label = 4;
+                    case 4: return [2 /*return*/];
                 }
             });
         });

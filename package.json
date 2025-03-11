@@ -4,11 +4,11 @@
   "description": "Petite API pour les web dev de Technifutur",
   "license": "ISC",
   "author": "Khun",
-  "main": "dist/app.js",
+  "main": "src/app.ts",
   "scripts": {
-    "start": "node --env-file=.env .",
+    "start": "node --env-file=.env -r ts-node/register .",
     "build": "tsc",
-    "dev": "nodemon --env-file=.env ."
+    "dev": "node --watch --env-file=.env -r ts-node/register ."
   },
   "dependencies": {
     "express": "^4.21.2",
@@ -16,12 +16,12 @@
     "pg": "^8.13.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.6",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/nodemailer": "^6.4.17",
-    "nodemon": "^3.1.9",
-    "tsc-watch": "^6.2.1"
+    "ts-node": "^10.9.2"
   }
 }
