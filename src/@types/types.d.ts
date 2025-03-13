@@ -11,6 +11,7 @@ import {
 export interface Db {
   sequelize: Sequelize;
   movie: ModelStatic<Movie>;
+  actor: ModelStatic<Actor>;
 }
 
 export interface Movie 
@@ -20,4 +21,14 @@ export interface Movie
   releaseYear: number;
   duration: number;
   hasSubtitle: boolean;
+  actors?: Actor[];
+  setActors: (actors: Actor[]) => Promise<any> 
+}
+
+export interface Actor extends Model<InferAttributes<Actor>, InferCreationAttributes<Actor>> {
+  id: CreationOptional<number>;
+  firstName: string;
+  lastName: string;
+  birthDate: Date;
+  movies?: Movie[];
 }

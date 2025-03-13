@@ -1,4 +1,4 @@
-import { object, string, number, bool } from 'yup';
+import { object, string, number, bool, array } from 'yup';
 export const MovieSchema = object({
     title: string()
         .required()
@@ -15,3 +15,7 @@ export const MovieSchema = object({
         .max(2100),
     hasSubtitle: bool().default(false)
 });
+
+export const MovieWithActorsSchema = MovieSchema.shape({
+    actors: array(number()).required()
+})

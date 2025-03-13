@@ -46,16 +46,30 @@ var MovieController = /** @class */ (function () {
     }
     MovieController.getMovies = function (_, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var result;
+            var result, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, models_1.default.movie.findAndCountAll({
                             offset: 0,
                             limit: 10,
+                            include: [models_1.default.actor]
                         })];
                     case 1:
                         result = _a.sent();
-                        res.json(result);
+                        data = {
+                            count: result.count,
+                            rows: result.rows.map(function (r) {
+                                var _a;
+                                return ({
+                                    id: r.id,
+                                    title: r.title,
+                                    releaseYear: r.releaseYear,
+                                    hasSubtitle: r.hasSubtitle,
+                                    nbActors: (_a = r.actors) === null || _a === void 0 ? void 0 : _a.length
+                                });
+                            })
+                        };
+                        res.json(data);
                         return [2 /*return*/];
                 }
             });
@@ -98,7 +112,8 @@ var MovieController = /** @class */ (function () {
                     case 0:
                         id = req.params.id;
                         return [4 /*yield*/, models_1.default.movie.findOne({
-                                where: { id: id }
+                                where: { id: id },
+                                include: [models_1.default.actor]
                             })];
                     case 1:
                         movie = _a.sent();
@@ -140,31 +155,45 @@ var MovieController = /** @class */ (function () {
     };
     MovieController.updateMovie = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, _a, title, releaseYear, hasSubtitle, duration, movie, data;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var id, _a, title, releaseYear, hasSubtitle, duration, actors, movie, _b, _c, data;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
                         id = req.params.id;
-                        _a = req.body, title = _a.title, releaseYear = _a.releaseYear, hasSubtitle = _a.hasSubtitle, duration = _a.duration;
+                        _a = req.body, title = _a.title, releaseYear = _a.releaseYear, hasSubtitle = _a.hasSubtitle, duration = _a.duration, actors = _a.actors;
                         return [4 /*yield*/, models_1.default.movie.findOne({
-                                where: { id: id }
+                                where: { id: id },
+                                include: [models_1.default.actor]
                             })];
                     case 1:
-                        movie = _b.sent();
+                        movie = _d.sent();
                         if (!!movie) return [3 /*break*/, 2];
                         res.sendStatus(404);
-                        return [3 /*break*/, 4];
-                    case 2: return [4 /*yield*/, movie.update({
-                            title: title,
-                            releaseYear: releaseYear,
-                            duration: duration,
-                            hasSubtitle: hasSubtitle
-                        })];
-                    case 3:
-                        data = _b.sent();
+                        return [3 /*break*/, 6];
+                    case 2:
+                        _c = (_b = movie).setActors;
+                        return [4 /*yield*/, models_1.default.actor.findAll({
+                                where: {
+                                    id: actors
+                                }
+                            })];
+                    case 3: 
+                    // Update movie's actors list 
+                    return [4 /*yield*/, _c.apply(_b, [_d.sent()])];
+                    case 4:
+                        // Update movie's actors list 
+                        _d.sent();
+                        return [4 /*yield*/, movie.update({
+                                title: title,
+                                releaseYear: releaseYear,
+                                duration: duration,
+                                hasSubtitle: hasSubtitle,
+                            })];
+                    case 5:
+                        data = _d.sent();
                         res.json(data.toJSON());
-                        _b.label = 4;
-                    case 4: return [2 /*return*/];
+                        _d.label = 6;
+                    case 6: return [2 /*return*/];
                 }
             });
         });

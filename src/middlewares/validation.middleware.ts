@@ -6,7 +6,9 @@ export const ValidationMiddleware = (schema: ObjectSchema<any>) => async (
 ) => {
     // si les données sont valides
     try {
-        const data = await schema.validate(req.body, { abortEarly: false })
+        const data = await schema.validate(req.body, { 
+            abortEarly: false,
+        })
         // passer au middleware suivant
         req.body = data;
         next();
