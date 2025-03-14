@@ -6,6 +6,9 @@ import { ValidationMiddleware } from "./middlewares/validation.middleware";
 import { MovieSchema, MovieWithActorsSchema } from "./validations/movie.schema";
 import { ActorSchema } from "./validations/actor.schema";
 import { ActorController } from "./controllers/actor.controller";
+import { AuthController } from "./controllers/auth.controller";
+import { AuthenticatedGuard } from "./guards/authenticated.guard";
+import { RoleGuard } from "./guards/role.guard";
 
 export const routes = Router()
   .get("/hello/:name", DefaultController.getHello)
@@ -14,8 +17,8 @@ export const routes = Router()
 // routes.get("/movies", MovieController.getMovies);
 // routes.post("/movies", MovieController.addMovie);
 routes.route('/movies')
-  .get(MovieController.getMovies)
-  .post(ValidationMiddleware(MovieSchema), MovieController.addMovie);
+  .get(AuthenticatedGuard, MovieController.getMovies)
+  .post(AuthenticatedGuard, RoleGuard("ADMIN") , ValidationMiddleware(MovieSchema), MovieController.addMovie);
 
 routes.route('/movies/:id')
   .get(MovieController.getMovieById)
@@ -24,3 +27,5 @@ routes.route('/movies/:id')
 
 routes.route('/actors')
   .post(ValidationMiddleware(ActorSchema), ActorController.addActor)
+
+routes.post('/login', AuthController.login);

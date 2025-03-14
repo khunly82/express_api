@@ -1,6 +1,5 @@
 import { DataTypes, Sequelize } from "sequelize";
 import { Movie } from "../@types/types";
-import actor from "./actor";
 
 export default (sequelize: Sequelize) => {
   const movie = sequelize.define<Movie>(

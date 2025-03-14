@@ -1,4 +1,4 @@
-import { Request, Response } from "express"
+import { Request, Response } from "express";
 import { ObjectSchema, ValidationError } from "yup";
 
 export const ValidationMiddleware = (schema: ObjectSchema<any>) => async (
